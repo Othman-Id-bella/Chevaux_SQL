@@ -1,0 +1,152 @@
+mysql: [Warning] C:\Program Files\MySQL\MySQL Server 8.0\bin\mysql.exe: ignoring option '--no-beep' due to invalid value ''.
+Enter password: *********
+Welcome to the MySQL monitor.  Commands end with ; or \g.
+Your MySQL connection id is 34
+Server version: 8.0.19 MySQL Community Server - GPL
+
+Copyright (c) 2000, 2020, Oracle and/or its affiliates. All rights reserved.
+
+Oracle is a registered trademark of Oracle Corporation and/or its
+affiliates. Other names may be trademarks of their respective
+owners.
+
+Type 'help;' or '\h' for help. Type '\c' to clear the current input statement.
+
+mysql> show databases;
++--------------------+
+| Database           |
++--------------------+
+| bdvol              |
+| centreformation    |
+| djallabasoft       |
+| elevage            |
+| entreprise         |
+| harmash            |
+| hollywood          |
+| information_schema |
+| isgi               |
+| mysql              |
+| performance_schema |
+| sakila             |
+| sys                |
+| test3              |
+| tram               |
++--------------------+
+15 rows in set (0.00 sec)
+
+mysql> use elevage;
+Database changed
+mysql> select*from cheval;
++----------+------------+--------------+---------+----------+--------+---------+---------+
+| num_chev | nom_cheval | num_tatouage | couleur | nom_race | numero | id_Pere | id_Mere |
++----------+------------+--------------+---------+----------+--------+---------+---------+
+|        1 | Thunder    |        12345 | Noir    | Pur Sang |      3 |    NULL |    NULL |
+|        2 | Dragon     |        56987 | Blanc   | Arabian  |      3 |    NULL |    NULL |
++----------+------------+--------------+---------+----------+--------+---------+---------+
+2 rows in set (0.00 sec)
+
+mysql> select*from personne;
++--------+----------+-------------+---------+------------+------------+-----------+
+| numero | nom_pers | prenom_pers | Adresse | Telephone  | fonction   | numeroSup |
++--------+----------+-------------+---------+------------+------------+-----------+
+|      1 | Bella    | Otman       |  block1 | 0634567890 | Directeur  |      NULL |
+|      2 | Lhaj     | Marie       |  block2 | 0687654321 | Secrétaire |         1 |
+|      3 | Messi    | AMin        |  block3 | 0678901234 | Éleveur    |         1 |
++--------+----------+-------------+---------+------------+------------+-----------+
+3 rows in set (0.00 sec)
+
+mysql> select*from race;
++----------+------------+----------+
+| nom_race | tailletype | poidtype |
++----------+------------+----------+
+| Arabian  |        450 |      155 |
+| Pur Sang |        500 |      160 |
+| Trait    |        800 |      170 |
++----------+------------+----------+
+3 rows in set (0.00 sec)
+
+mysql> select*from croissance;
++------+-------+--------+--------+----------+
+| id_C | Mois  | poidsC | taille | num_chev |
++------+-------+--------+--------+----------+
+|    1 | Mars  |    450 |    155 |        1 |
+|    2 | Avril |    460 |    157 |        1 |
++------+-------+--------+--------+----------+
+2 rows in set (0.00 sec)
+
+mysql> select*from proprietaire;
++--------+----------+------------+------------+
+| numero | num_chev | prix_achat | date_achat |
++--------+----------+------------+------------+
+|      1 |        2 |      20000 | 2019-05-12 |
+|      2 |        1 |      30000 | 2018-09-25 |
++--------+----------+------------+------------+
+2 rows in set (0.00 sec)
+
+mysql> select*from participation;
++----------------------+--------+----------+------------+---------------+
+| nom_concour          | lieu   | num_chev | annee      | nbr_participe |
++----------------------+--------+----------+------------+---------------+
+| Tborida              | Asfi   |        1 | 2022-06-02 |            20 |
+| Championnat National | Jadida |        2 | 2019-04-06 |            16 |
++----------------------+--------+----------+------------+---------------+
+2 rows in set (0.00 sec)
+
+mysql> select*from concour;
++----------------------+------------+----------------+--------+
+| nom_concour          | Annee      | nomb_participe | lieu   |
++----------------------+------------+----------------+--------+
+| Tborida              | 2022-06-02 |             20 | Asfi   |
+| Championnat National | 2019-04-06 |             16 | Jadida |
++----------------------+------------+----------------+--------+
+2 rows in set (0.00 sec)
+
+mysql> select * from cheval
+    -> where nom_race = 'Arabian'
+    -> order by nom_cheval desc;
++----------+------------+--------------+---------+----------+--------+---------+---------+
+| num_chev | nom_cheval | num_tatouage | couleur | nom_race | numero | id_Pere | id_Mere |
++----------+------------+--------------+---------+----------+--------+---------+---------+
+|        2 | Dragon     |        56987 | Blanc   | Arabian  |      3 |    NULL |    NULL |
++----------+------------+--------------+---------+----------+--------+---------+---------+
+1 row in set (0.00 sec)
+
+
+mysql> select nom_cheval,poidtype,tailletype from cheval
+    -> join race
+    -> where cheval.nom_race = race.nom_race and cheval.nom_race = 'Arabian';
++------------+----------+------------+
+| nom_cheval | poidtype | tailletype |
++------------+----------+------------+
+| Dragon     |      155 |        450 |
++------------+----------+------------+
+1 row in set (0.00 sec)
+
+mysql> select * from personne
+    -> where numeroSup is null;
++--------+----------+-------------+---------+------------+-----------+-----------+
+| numero | nom_pers | prenom_pers | Adresse | Telephone  | fonction  | numeroSup |
++--------+----------+-------------+---------+------------+-----------+-----------+
+|      1 | Bella    | Otman       |  block1 | 0634567890 | Directeur |      NULL |
++--------+----------+-------------+---------+------------+-----------+-----------+
+1 row in set (0.00 sec)
+
+mysql> select*from proprietaire;
++--------+----------+------------+------------+
+| numero | num_chev | prix_achat | date_achat |
++--------+----------+------------+------------+
+|      1 |        2 |      20000 | 2019-05-12 |
+|      2 |        1 |      30000 | 2018-09-25 |
++--------+----------+------------+------------+
+2 rows in set (0.00 sec)
+
+mysql> select * from concour
+    -> where annee between '2019-01-01' and '2019-12-31';
++----------------------+------------+----------------+--------+
+| nom_concour          | Annee      | nomb_participe | lieu   |
++----------------------+------------+----------------+--------+
+| Championnat National | 2019-04-06 |             16 | Jadida |
++----------------------+------------+----------------+--------+
+1 row in set (0.00 sec)
+
+mysql> merci
